@@ -14,6 +14,11 @@ const commentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    userRole: {
+      type: String,
+      enum: ['superadmin', 'admin', 'user'],
+      required: true,
+    },
     likes: {
       type: Array,
       default: [],

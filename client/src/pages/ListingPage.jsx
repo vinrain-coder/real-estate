@@ -1,12 +1,11 @@
 import { Spinner, Button } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import CallToAction from "../components/CallToAction";
 import CommentSection from "../components/CommentSection";
-import PostCard from "../components/PostCard";
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'; 
 import "leaflet/dist/leaflet.css"; 
+import ListingCard from "../components/ListingCard"; // Import your ListingCard component if needed
 
 export default function ListingPage() {
   const { listingSlug } = useParams();
@@ -105,9 +104,7 @@ export default function ListingPage() {
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             />
             <Marker position={[listing.latitude, listing.longitude]}>
-              <Popup>
-                {listing.address}
-              </Popup>
+              <Popup>{listing.address}</Popup>
             </Marker>
           </MapContainer>
         </div>
@@ -121,7 +118,7 @@ export default function ListingPage() {
         <div className="flex gap-5 flex-wrap justify-center">
           {recentListings &&
             recentListings.map((recentListing) => (
-              <PostCard key={recentListing._id} post={recentListing} />
+              <ListingCard key={recentListing._id} listing={recentListing} />
             ))}
         </div>
       </div>

@@ -36,6 +36,7 @@ export default function DashProfile() {
   const [formData, setFormData] = useState({});
   const filePickerRef = useRef();
   const dispatch = useDispatch();
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -43,6 +44,7 @@ export default function DashProfile() {
       setImageFileUrl(URL.createObjectURL(file));
     }
   };
+
   useEffect(() => {
     if (imageFile) {
       uploadImage();
@@ -50,16 +52,6 @@ export default function DashProfile() {
   }, [imageFile]);
 
   const uploadImage = async () => {
-    // service firebase.storage {
-    //   match /b/{bucket}/o {
-    //     match /{allPaths=**} {
-    //       allow read;
-    //       allow write: if
-    //       request.resource.size < 2 * 1024 * 1024 &&
-    //       request.resource.contentType.matches('image/.*')
-    //     }
-    //   }
-    // }
     setImageFileUploading(true);
     setImageFileUploadError(null);
     const storage = getStorage(app);
@@ -131,6 +123,7 @@ export default function DashProfile() {
       setUpdateUserError(error.message);
     }
   };
+
   const handleDeleteUser = async () => {
     setShowModal(false);
     try {
@@ -164,6 +157,7 @@ export default function DashProfile() {
       console.log(error.message);
     }
   };
+
   return (
     <div className='max-w-lg mx-auto p-3 w-full'>
       <h1 className='my-7 text-center font-semibold text-3xl'>Profile</h1>
@@ -193,9 +187,7 @@ export default function DashProfile() {
                   left: 0,
                 },
                 path: {
-                  stroke: `rgba(62, 152, 199, ${
-                    imageFileUploadProgress / 100
-                  })`,
+                  stroke: `rgba(62, 152, 199, ${imageFileUploadProgress / 100})`,
                 },
               }}
             />
@@ -242,13 +234,24 @@ export default function DashProfile() {
           {loading ? 'Loading...' : 'Update'}
         </Button>
         {currentUser.isAdmin && (
-          <Link to={'/create-post'}>
+          <Link to={'/create-listing'}>
             <Button
               type='button'
               gradientDuoTone='purpleToPink'
               className='w-full'
             >
-              Create a post
+              Create a listing
+            </Button>
+          </Link>
+        )}
+        {currentUser.isSuperAdmin && (
+          <Link to={'/manage-listings'}>
+            <Button
+              type='button'
+              gradientDuoTone='greenToBlue'
+              className='w-full'
+            >
+              Manage all listings
             </Button>
           </Link>
         )}
@@ -282,23 +285,22 @@ export default function DashProfile() {
         popup
         size='md'
       >
-        <Modal.Header />
-        <Modal.Body>
-          <div className='text-center'>
-            <HiOutlineExclamationCircle className='h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto' />
-            <h3 className='mb-5 text-lg text-gray-500 dark:text-gray-400'>
+        <ModalBody>
+          <div className='flex flex-col justify-center items-center'>
+            <HiOutlineExclamationCircle className='text-red-500 mb-2' />
+            <h3 className='text-lg font-semibold text-center'>
               Are you sure you want to delete your account?
             </h3>
-            <div className='flex justify-center gap-4'>
-              <Button color='failure' onClick={handleDeleteUser}>
-                Yes, I'm sure
+            <div className='flex mt-4 gap-4'>
+              <Button onClick={handleDeleteUser} gradientDuoTone='purpleToPink'>
+                Yes
               </Button>
-              <Button color='gray' onClick={() => setShowModal(false)}>
-                No, cancel
+              <Button onClick={() => setShowModal(false)} gradientDuoTone='blueToGreen'>
+                No
               </Button>
             </div>
           </div>
-        </Modal.Body>
+        </ModalBody>
       </Modal>
     </div>
   );

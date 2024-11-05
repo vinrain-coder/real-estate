@@ -10,6 +10,7 @@ export default function DashUsers() {
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState('');
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -48,18 +49,18 @@ export default function DashUsers() {
 
   const handleDeleteUser = async () => {
     try {
-        const res = await fetch(`/api/user/delete/${userIdToDelete}`, {
-            method: 'DELETE',
-        });
-        const data = await res.json();
-        if (res.ok) {
-            setUsers((prev) => prev.filter((user) => user._id !== userIdToDelete));
-            setShowModal(false);
-        } else {
-            console.log(data.message);
-        }
+      const res = await fetch(`/api/user/delete/${userIdToDelete}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setUsers((prev) => prev.filter((user) => user._id !== userIdToDelete));
+        setShowModal(false);
+      } else {
+        console.log(data.message);
+      }
     } catch (error) {
-        console.log(error.message);
+      console.log(error.message);
     }
   };
 
@@ -74,7 +75,7 @@ export default function DashUsers() {
               <Table.HeadCell>Username</Table.HeadCell>
               <Table.HeadCell>Email</Table.HeadCell>
               <Table.HeadCell>Admin</Table.HeadCell>
-              <Table.HeadCell>Delete</Table.HeadCell>
+              {currentUser.isSuperAdmin && <Table.HeadCell>Delete</Table.HeadCell>}
             </Table.Head>
             {users.map((user) => (
               <Table.Body className='divide-y' key={user._id}>
@@ -98,17 +99,19 @@ export default function DashUsers() {
                       <FaTimes className='text-red-500' />
                     )}
                   </Table.Cell>
-                  <Table.Cell>
-                    <span
-                      onClick={() => {
-                        setShowModal(true);
-                        setUserIdToDelete(user._id);
-                      }}
-                      className='font-medium text-red-500 hover:underline cursor-pointer'
-                    >
-                      Delete
-                    </span>
-                  </Table.Cell>
+                  {currentUser.isSuperAdmin && (
+                    <Table.Cell>
+                      <span
+                        onClick={() => {
+                          setShowModal(true);
+                          setUserIdToDelete(user._id);
+                        }}
+                        className='font-medium text-red-500 hover:underline cursor-pointer'
+                      >
+                        Delete
+                      </span>
+                    </Table.Cell>
+                  )}
                 </Table.Row>
               </Table.Body>
             ))}
