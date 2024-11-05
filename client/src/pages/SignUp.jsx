@@ -8,35 +8,39 @@ export default function SignUp() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.username || !formData.email || !formData.password) {
       return setErrorMessage("Please fill out all fields");
     }
+
+    setLoading(true);
+    setErrorMessage(null);
     try {
-      setLoading(true);
-      setErrorMessage(null);
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      if (data.success === false) {
-        return setErrorMessage(data.message);
-      }
-      setLoading(false);
+
       if (res.ok) {
         navigate("/sign-in");
+      } else {
+        setErrorMessage(data.message || 'Sign-up failed');
       }
     } catch (error) {
-      setErrorMessage("An error ocurred. Please try again.");
+      setErrorMessage("An error occurred. Please try again.");
+    } finally {
       setLoading(false);
     }
   };
+
   return (
     <div className="min-h-screen mt-20 px-4">
       <div className="flex flex-col sm:flex-row md:items-center p-3 max-w-3xl mx-auto gap-5">
@@ -48,17 +52,16 @@ export default function SignUp() {
             Blog
           </Link>
           <p className="text-sm mt-5">
-            This is my blog. You can you can sign up with your email and
-            password
+            This is my blog. Create an account to join us!
           </p>
         </div>
         <div className="flex-1">
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <div>
-              <Label value="Your username" />
+              <Label value="Username" />
               <TextInput
                 type="text"
-                placeholder="Username"
+                placeholder="Your username"
                 id="username"
                 onChange={handleChange}
               />
@@ -76,7 +79,7 @@ export default function SignUp() {
               <Label value="Your password" />
               <TextInput
                 type="password"
-                placeholder="Password"
+                placeholder="*********"
                 id="password"
                 onChange={handleChange}
               />
@@ -98,7 +101,7 @@ export default function SignUp() {
             <OAuth />
           </form>
           <div className="flex gap-2 text-sm mt-5">
-            <span>Have an account?</span>
+            <span>Already have an account?</span>
             <Link to="/sign-in" className="text-blue-500">
               Sign In
             </Link>

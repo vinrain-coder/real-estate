@@ -14,34 +14,37 @@ export default function SignIn() {
   const { loading, error: errorMessage } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
       return dispatch(signInFailure("Please fill out all the fields"));
     }
+
+    dispatch(signInStart());
     try {
-      dispatch(signInStart());
       const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      if (data.success === false) {
-        dispatch(signInFailure(data.message));
-      }
 
       if (res.ok) {
         dispatch(signInSuccess(data));
         navigate("/");
+      } else {
+        dispatch(signInFailure(data.message || 'Sign-in failed'));
       }
     } catch (error) {
-      dispatch(signInFailure(error.message));
+      dispatch(signInFailure("An error occurred. Please try again."));
     }
   };
+
   return (
     <div className="min-h-screen mt-20 px-4">
       <div className="flex flex-col sm:flex-row md:items-center p-3 max-w-3xl mx-auto gap-5">
@@ -53,8 +56,7 @@ export default function SignIn() {
             Blog
           </Link>
           <p className="text-sm mt-5">
-            This is my blog. You can you can sign in with your email and
-            password
+            This is my blog. You can sign in with your email and password.
           </p>
         </div>
         <div className="flex-1">
@@ -78,7 +80,7 @@ export default function SignIn() {
               />
             </div>
             <Button
-            gradientDuoTone="purpleToPink"
+              gradientDuoTone="purpleToPink"
               type="submit"
               disabled={loading}
             >
