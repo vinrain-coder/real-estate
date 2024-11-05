@@ -57,7 +57,7 @@ export default function Header() {
     <Navbar className="border-b-2">
       <Link
         to="/"
-        className="self-center whitespace-nowrap text-md sm:text-2xl font-bold  text-orange-500" 
+        className="self-center whitespace-nowrap text-md text-2xl md:text-4xl font-bold  text-orange-500" 
       >
           FindHouse
         

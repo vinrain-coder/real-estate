@@ -5,7 +5,7 @@ const GetStarted = () => {
     <div id="get-started" className="py-10">
       <div className="max-w-2xl mx-auto px-6">
         <div className="flex flex-col items-center gap-6 p-8 bg-sky-100 border border-blue-200 rounded-lg shadow-lg text-center">
-          <h2 className="text-blue-800 text-2xl font-semibold">Get started with FindHome</h2>
+          <h2 className="text-blue-800 text-2xl font-semibold">Get started with FindHouse</h2>
           <p className="text-gray-600">
             Subscribe and find super attractive price quotes from us.
             <br />

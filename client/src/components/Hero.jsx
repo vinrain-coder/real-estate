@@ -68,9 +68,9 @@ const Hero = () => {
           </div>
           <Link
             to={"/search"}
-            className="text-2xl text-teal-500 hover:underline text-center -mt-2"
+            className="text-2xl text-white font-semibold p-2 bg-orange-500 rounded-md"
           >
-            View Listings
+            View listings
           </Link>
         </div>
 

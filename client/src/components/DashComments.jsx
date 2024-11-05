@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { FaCheck, FaTimes } from "react-icons/fa";
-import { useRouter } from "next/router";
 
 export default function DashComments() {
   const { currentUser } = useSelector((state) => state.user);
