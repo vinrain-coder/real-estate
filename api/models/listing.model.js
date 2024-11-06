@@ -1,8 +1,12 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const listingSchema = new mongoose.Schema(
   {
     userId: {
+      type: String,
+      required: true,
+    },
+    description: {
       type: String,
       required: true,
     },
@@ -11,125 +15,55 @@ const listingSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    description: {
+    country: {
+      type: String,
+      required: true,
+      default: "kenya",
+    },
+    city: {
       type: String,
       required: true,
     },
-    images: {
-      type: [String], 
-      default: [
-        'https://example.com/default-property-image.jpg',
-      ],
+    estate: {
+      type: String,
+      required: true,
     },
-    location: {
-      address: {
-        type: String,
-        required: true,
-      },
-      city: {
-        type: String,
-        required: true,
-      },
-      state: {
-        type: String,
-        required: true,
-      },
-      country: {
-        type: String,
-        required: true,
-      },
-      postalCode: {
-        type: String,
-        required: false,
-      },
-      coordinates: {
-        latitude: {
-          type: Number,
-          required: false, 
-        },
-        longitude: {
-          type: Number,
-          required: false,
-        },
-      },
+    image: {
+      type: String,
+      required: true,
     },
-    price: {
+    category: {
+      type: String,
+      default: "uncategorized",
+      required: true,
+    },
+    area: {
       type: Number,
-      required: true,
+      required: false,
     },
-    propertyType: {
+    type: {
       type: String,
-      enum: ['House', 'Apartment', 'Condo', 'Land', 'Commercial', 'Other'],
+      default: "all",
       required: true,
     },
     status: {
       type: String,
-      enum: ['For Sale', 'For Rent', 'Sold', 'Rented'],
+      default: "all",
       required: true,
     },
-    bedrooms: {
+    price: {
       type: Number,
-      required: false,
-    },
-    bathrooms: {
-      type: Number,
-      required: false,
-    },
-    squareFeet: {
-      type: Number,
-      required: false,
-    },
-    lotSize: {
-      type: Number, 
-      required: false,
-    },
-    yearBuilt: {
-      type: Number,
-      required: false,
-    },
-    amenities: {
-      type: [String], 
-      required: false,
-    },
-    features: {
-      type: [String], 
-      required: false,
+      required: true,
     },
     slug: {
       type: String,
       required: true,
       unique: true,
     },
-    category: {
-      type: String,
-      default: 'Residential',
-    },
-    listedDate: {
-      type: Date,
-      default: Date.now,
-    },
-    contactInfo: {
-      phone: {
-        type: String,
-        required: false,
-      },
-      email: {
-        type: String,
-        required: false,
-      },
-    },
-    views: {
-      type: Number,
-      default: 0,
-    },
-    googleMapsUrl: {
-      type: String,
-      required: false, 
-    },
   },
   { timestamps: true }
 );
 
-const Listing = mongoose.model('Listing', listingSchema);
+const Listing = mongoose.model("Listing", listingSchema);
 
 export default Listing;

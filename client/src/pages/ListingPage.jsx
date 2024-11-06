@@ -3,9 +3,8 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import CallToAction from "../components/CallToAction";
 import CommentSection from "../components/CommentSection";
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'; 
-import "leaflet/dist/leaflet.css"; 
-import ListingCard from "../components/ListingCard"; // Import your ListingCard component if needed
+import ListingCard from "../components/ListingCard";
+import { AiOutlineArrowRight } from "react-icons/ai";
 
 export default function ListingPage() {
   const { listingSlug } = useParams();
@@ -25,9 +24,11 @@ export default function ListingPage() {
           setLoading(false);
           return;
         }
-        setListing(data.listings[0]);
-        setLoading(false);
-        setError(false);
+        if (res.ok) {
+          setListing(data.listings[0]); // Ensure we're getting the first item
+          setLoading(false);
+          setError(false);
+        }
       } catch (error) {
         setError(true);
         setLoading(false);
@@ -38,14 +39,22 @@ export default function ListingPage() {
 
   useEffect(() => {
     const fetchRecentListings = async () => {
-      const res = await fetch(`/api/listing/getlistings?limit=3`);
-      const data = await res.json();
-      if (res.ok) {
-        setRecentListings(data.listings);
+      try {
+        const res = await fetch(
+          `/api/listing/getlistings?category=${listing?.category}`
+        );
+        const data = await res.json();
+        if (res.ok) {
+          setRecentListings(data.listings);
+        }
+      } catch (error) {
+        console.log(error.message);
       }
     };
-    fetchRecentListings();
-  }, []);
+    if (listing) {
+      fetchRecentListings();
+    }
+  }, [listing]);
 
   if (loading)
     return (
@@ -63,7 +72,7 @@ export default function ListingPage() {
 
   return (
     <main className="p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
-      <h1 className="text-3xl mt-10 p-3 text-center font-serif max-3-2xl mx-auto lg:text-4xl">
+      <h1 className="text-3xl mt-10 p-3 text-center font-lora max-3-2xl mx-auto lg:text-4xl font-semibold text-orange-400">
         {listing && listing.title}
       </h1>
       {listing && (
@@ -71,7 +80,7 @@ export default function ListingPage() {
           to={`/search?category=${listing.category}`}
           className="self-center mt-5"
         >
-          <Button color="gray" pill size="xs">
+          <Button color="gray" pill size="lg">
             {listing.category}
           </Button>
         </Link>
@@ -80,41 +89,60 @@ export default function ListingPage() {
         <img
           src={listing.image}
           alt={listing.title}
-          className="mt-10 p-3 max-h-[600px] w-full object-cover"
+          className="mt-10 h-56 md:h-96 object-cover w-full rounded-lg border-2 self-center border-orange-300 max-w-4xl"
         />
       )}
-      {listing && (
-        <div className="flex justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl text-xs">
-          <span>{new Date(listing.createdAt).toLocaleDateString()}</span>
-          <span className="italic">{listing.price} Ksh</span>
+
+      <div className="flex flex-row gap-4 items-center justify-center m-10">
+        <h1 className="font-bold text-xl">Location:</h1>
+        <h1 className="font-semibold">
+          {listing &&
+            listing.country &&
+            listing.country.charAt(0).toUpperCase() + listing.country.slice(1)}
+        </h1>
+        <AiOutlineArrowRight />
+
+        <h1 className="font-semibold">
+          {listing &&
+            listing.city &&
+            listing.city.charAt(0).toUpperCase() + listing.city.slice(1)}
+        </h1>
+        <AiOutlineArrowRight />
+
+        <h1 className="font-semibold">
+          {listing &&
+            listing.estate &&
+            listing.estate.charAt(0).toUpperCase() + listing.estate.slice(1)}
+        </h1>
+      </div>
+      <div className="flex flex-row gap-12 items-center justify-center">
+        <div className=" flex flex-row gap-2">
+          <h1 className="font-semibold">Status:</h1>
+          <h1 className="font-semibold">
+            {listing &&
+              listing.status &&
+              listing.status.charAt(0).toUpperCase() + listing.status.slice(1)}
+          </h1>
         </div>
-      )}
-      {listing && (
-        <div className="p-3 max-w-2xl mx-auto w-full">
-          <h2 className="text-xl font-semibold">Description</h2>
-          <p className="mt-2">{listing.description}</p>
+        <div className="flex flex-row gap-1 items-center justify-center">
+          <h1 className=" flex flex-row text-orange-500 font-bold text-lg">Price: Kshs.</h1>
+          <h1 className="font-bold text-orange-500 text-lg">
+            {listing && listing.price && listing.price.toLocaleString()}
+          </h1>
         </div>
-      )}
+      </div>
       {listing && (
-        <div className="p-3 max-w-2xl mx-auto w-full">
-          <h2 className="text-xl font-semibold">Location</h2>
-          <MapContainer center={[listing.latitude, listing.longitude]} zoom={13} className="h-60 w-full">
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            />
-            <Marker position={[listing.latitude, listing.longitude]}>
-              <Popup>{listing.address}</Popup>
-            </Marker>
-          </MapContainer>
-        </div>
+        <div
+          className="p-3 m-10 max-w-2xl mx-auto w-full listing-content"
+          dangerouslySetInnerHTML={{ __html: listing.description }}
+        ></div>
       )}
       <div className="max-w-4xl mx-auto w-full">
         <CallToAction />
       </div>
       {listing && <CommentSection listingId={listing._id} />}
       <div className="flex flex-col justify-center items-center mb-5">
-        <h1 className="text-xl mt-5">Recent Listings</h1>
+        <h1 className="text-xl mt-5">Recent articles</h1>
         <div className="flex gap-5 flex-wrap justify-center">
           {recentListings &&
             recentListings.map((recentListing) => (

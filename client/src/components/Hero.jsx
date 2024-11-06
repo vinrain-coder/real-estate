@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <section className="relative z-10 pb-12 bg-gradient-to-r from-blue-900 via-indigo-800 to-blue-600 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700">
+    <section className="relative pb-12 bg-gradient-to-r from-blue-900 via-indigo-800 to-blue-600 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700">
       <div className="flex flex-col md:flex-row items-center md:justify-between mx-auto p-6 md:p-12 max-w-7xl space-y-12 md:space-y-0 gap-4">
         {/* Left side */}
         <div className="flex flex-col gap-8 md:gap-12 text-center md:text-left relative">

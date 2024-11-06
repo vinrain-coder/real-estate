@@ -23,11 +23,11 @@ export default function UpdateListing() {
   const { listingId } = useParams();
 
   const navigate = useNavigate();
-  const { currentUser } = useSelector((state) => state.user);
+    const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
-    const fetchListing = async () => {
-      try {
+    try {
+      const fetchListing = async () => {
         const res = await fetch(`/api/listing/getlistings?listingId=${listingId}`);
         const data = await res.json();
         if (!res.ok) {
@@ -39,15 +39,15 @@ export default function UpdateListing() {
           setPublishError(null);
           setFormData(data.listings[0]);
         }
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
+      };
 
-    fetchListing();
+      fetchListing();
+    } catch (error) {
+      console.log(error.message);
+    }
   }, [listingId]);
 
-  const handleUploadImage = async () => {
+  const handleUpdloadImage = async () => {
     try {
       if (!file) {
         setImageUploadError('Please select an image');
@@ -83,7 +83,6 @@ export default function UpdateListing() {
       console.log(error);
     }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -108,10 +107,9 @@ export default function UpdateListing() {
       setPublishError('Something went wrong');
     }
   };
-
   return (
     <div className='p-3 max-w-3xl mx-auto min-h-screen'>
-      <h1 className='text-center text-3xl my-7 font-semibold'>Update Listing</h1>
+      <h1 className='text-center text-3xl my-7 font-semibold'>Update listing</h1>
       <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
         <div className='flex flex-col gap-4 sm:flex-row justify-between'>
           <TextInput
@@ -132,9 +130,9 @@ export default function UpdateListing() {
             value={formData.category}
           >
             <option value='uncategorized'>Select a category</option>
-            <option value='residential'>Residential</option>
-            <option value='commercial'>Commercial</option>
-            <option value='land'>Land</option>
+            <option value='javascript'>JavaScript</option>
+            <option value='reactjs'>React.js</option>
+            <option value='nextjs'>Next.js</option>
           </Select>
         </div>
         <div className='flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3'>
@@ -148,7 +146,7 @@ export default function UpdateListing() {
             gradientDuoTone='purpleToBlue'
             size='sm'
             outline
-            onClick={handleUploadImage}
+            onClick={handleUpdloadImage}
             disabled={imageUploadProgress}
           >
             {imageUploadProgress ? (
@@ -173,16 +171,16 @@ export default function UpdateListing() {
         )}
         <ReactQuill
           theme='snow'
-          value={formData.content}
-          placeholder='Write a description...'
+          value={formData.description}
+          placeholder='Write something...'
           className='h-72 mb-12'
           required
           onChange={(value) => {
-            setFormData({ ...formData, content: value });
+            setFormData({ ...formData, description: value });
           }}
         />
         <Button type='submit' gradientDuoTone='purpleToPink'>
-          Update Listing
+          Update listing
         </Button>
         {publishError && (
           <Alert className='mt-5' color='failure'>

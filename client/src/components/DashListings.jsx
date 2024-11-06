@@ -10,13 +10,10 @@ export default function DashListings() {
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [listingIdToDelete, setListingIdToDelete] = useState("");
-
   useEffect(() => {
     const fetchListings = async () => {
       try {
-        const res = await fetch(
-          `/api/listing/getlistings?userId=${currentUser._id}&superadmin=${currentUser.isSuperadmin}`
-        );
+        const res = await fetch(`/api/listing/getlistings?userId=${currentUser._id}`);
         const data = await res.json();
         if (res.ok) {
           setUserListings(data.listings);
@@ -28,14 +25,16 @@ export default function DashListings() {
         console.log(error.message);
       }
     };
-    fetchListings();
-  }, [currentUser._id, currentUser.isSuperadmin]);
+    if (currentUser.isAdmin) {
+      fetchListings();
+    }
+  }, [currentUser._id]);
 
   const handleShowMore = async () => {
     const startIndex = userListings.length;
     try {
       const res = await fetch(
-        `/api/listing/getlistings?userId=${currentUser._id}&startIndex=${startIndex}&superadmin=${currentUser.isSuperadmin}`
+        `/api/listing/getlistings?userId=${currentUser._id}&startIndex=${startIndex}`
       );
       const data = await res.json();
       if (res.ok) {
@@ -73,16 +72,18 @@ export default function DashListings() {
 
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
-      {userListings.length > 0 ? (
+      {currentUser.isAdmin && userListings.length > 0 ? (
         <>
           <Table hoverable className="shadow-md">
             <Table.Head>
               <Table.HeadCell>Date updated</Table.HeadCell>
               <Table.HeadCell>Listing image</Table.HeadCell>
-              <Table.HeadCell>Title</Table.HeadCell>
+              <Table.HeadCell>Listing title</Table.HeadCell>
               <Table.HeadCell>Category</Table.HeadCell>
               <Table.HeadCell>Delete</Table.HeadCell>
-              <Table.HeadCell>Edit</Table.HeadCell>
+              <Table.HeadCell>
+                <span>Edit</span>
+              </Table.HeadCell>
             </Table.Head>
             {userListings.map((listing) => (
               <Table.Body key={listing._id} className="divide-y">
@@ -109,27 +110,23 @@ export default function DashListings() {
                   </Table.Cell>
                   <Table.Cell>{listing.category}</Table.Cell>
                   <Table.Cell>
-                    {(currentUser.isSuperadmin || listing.userId === currentUser._id) && (
-                      <span
-                        onClick={() => {
-                          setShowModal(true);
-                          setListingIdToDelete(listing._id);
-                        }}
-                        className="font-medium text-red-500 hover:underline cursor-pointer"
-                      >
-                        Delete
-                      </span>
-                    )}
+                    <span
+                      onClick={() => {
+                        setShowModal(true);
+                        setListingIdToDelete(listing._id);
+                      }}
+                      className="font-medium text-red-500 hover:underline cursor-pointer"
+                    >
+                      Delete
+                    </span>
                   </Table.Cell>
                   <Table.Cell>
-                    {(currentUser.isSuperadmin || listing.userId === currentUser._id) && (
-                      <Link
-                        className="text-teal-500 hover:underline"
-                        to={`/update-listing/${listing._id}`}
-                      >
-                        Edit
-                      </Link>
-                    )}
+                    <Link
+                      className="text-teal-500 hover:underline"
+                      to={`/update-listing/${listing._id}`}
+                    >
+                      <span>Edit</span>
+                    </Link>
                   </Table.Cell>
                 </Table.Row>
               </Table.Body>
@@ -145,7 +142,7 @@ export default function DashListings() {
           )}
         </>
       ) : (
-        <p>No listings available!</p>
+        <p>You have no listings yet!</p>
       )}
       <Modal
         show={showModal}

@@ -18,7 +18,6 @@ export default function DashSidebar() {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
   const [tab, setTab] = useState('');
-
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const tabFromUrl = urlParams.get('tab');
@@ -98,28 +97,6 @@ export default function DashSidebar() {
                   as='div'
                 >
                   Comments
-                </Sidebar.Item>
-              </Link>
-            </>
-          )}
-          {currentUser.isSuperAdmin && (
-            <>
-              <Link to='/dashboard?tab=manage-listings'>
-                <Sidebar.Item
-                  active={tab === 'manage-listings'}
-                  icon={HiDocumentText}
-                  as='div'
-                >
-                  Manage Listings
-                </Sidebar.Item>
-              </Link>
-              <Link to='/dashboard?tab=manage-users'>
-                <Sidebar.Item
-                  active={tab === 'manage-users'}
-                  icon={HiOutlineUserGroup}
-                  as='div'
-                >
-                  Manage Users
                 </Sidebar.Item>
               </Link>
             </>

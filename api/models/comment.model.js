@@ -6,17 +6,12 @@ const commentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    postId: {
+    listingId: {
       type: String,
       required: true,
     },
     userId: {
       type: String,
-      required: true,
-    },
-    userRole: {
-      type: String,
-      enum: ['superadmin', 'admin', 'user'],
       required: true,
     },
     likes: {

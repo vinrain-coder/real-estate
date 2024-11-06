@@ -1,11 +1,11 @@
-import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { AiOutlineSearch } from 'react-icons/ai';
-import { FaMoon, FaSun } from 'react-icons/fa';
-import { useSelector, useDispatch } from 'react-redux';
-import { toggleTheme } from '../redux/theme/themeSlice';
-import { logoutSuccess } from '../redux/user/userSlice';
-import { useEffect, useState } from 'react';
+import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AiOutlineSearch } from "react-icons/ai";
+import { FaMoon, FaSun } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleTheme } from "../redux/theme/themeSlice";
+import { logoutSuccess } from "../redux/user/userSlice";
+import { useEffect, useState } from "react";
 
 export default function Header() {
   const path = useLocation().pathname;
@@ -14,12 +14,12 @@ export default function Header() {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [showSearchInput, setShowSearchInput] = useState(false);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
-    const searchTermFromUrl = urlParams.get('searchTerm');
+    const searchTermFromUrl = urlParams.get("searchTerm");
     if (searchTermFromUrl) {
       setSearchTerm(searchTermFromUrl);
     }
@@ -27,8 +27,8 @@ export default function Header() {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch('/api/user/logout', {
-        method: 'POST',
+      const res = await fetch("/api/user/logout", {
+        method: "POST",
       });
       const data = await res.json();
       if (!res.ok) {
@@ -44,7 +44,7 @@ export default function Header() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const urlParams = new URLSearchParams(location.search);
-    urlParams.set('searchTerm', searchTerm);
+    urlParams.set("searchTerm", searchTerm);
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
   };
@@ -57,12 +57,11 @@ export default function Header() {
     <Navbar className="border-b-2">
       <Link
         to="/"
-        className="self-center whitespace-nowrap text-md text-2xl md:text-4xl font-bold  text-orange-500" 
+        className="self-center whitespace-nowrap text-md text-2xl md:text-4xl font-bold text-orange-500"
       >
-          FindHouse
-        
+        FindHouse
       </Link>
-      
+
       {/* Large screen search */}
       <form onSubmit={handleSubmit} className="hidden md:flex">
         <TextInput
@@ -86,7 +85,10 @@ export default function Header() {
 
       {/* Small screen search input */}
       {showSearchInput && (
-        <form onSubmit={handleSubmit} className="hidden w-full justify-center mt-2">
+        <form
+          onSubmit={handleSubmit}
+          className="hidden w-full justify-center mt-2"
+        >
           <TextInput
             type="text"
             placeholder="Search..."
@@ -105,20 +107,26 @@ export default function Header() {
           pill
           onClick={() => dispatch(toggleTheme())}
         >
-          {theme === 'light' ? <FaSun /> : <FaMoon />}
+          {theme === "light" ? <FaSun /> : <FaMoon />}
         </Button>
-        
+
         {currentUser ? (
           <Dropdown
             arrowIcon={false}
             inline
-            label={<Avatar alt="user" img={currentUser.profilePicture} rounded />}
+            label={
+              <Avatar alt="user" img={currentUser.profilePicture} rounded />
+            }
           >
             <Dropdown.Header>
-              <span className="block text-sm">@{currentUser.username}</span>
-              <span className="block text-sm font-medium truncate">{currentUser.email}</span>
+              <span className="block text-sm z-10">
+                @{currentUser.username}
+              </span>
+              <span className="block text-sm font-medium truncate">
+                {currentUser.email}
+              </span>
             </Dropdown.Header>
-            <Link to={'/dashboard?tab=profile'}>
+            <Link to={"/dashboard?tab=profile"}>
               <Dropdown.Item>Profile</Dropdown.Item>
             </Link>
             <Dropdown.Divider />
