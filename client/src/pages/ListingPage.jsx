@@ -81,7 +81,9 @@ export default function ListingPage() {
           className="self-center mt-5"
         >
           <Button color="gray" pill size="lg">
-            {listing.category}
+          {listing &&
+            listing.category &&
+            listing.category.charAt(0).toUpperCase() + listing.category.slice(1)}
           </Button>
         </Link>
       )}
