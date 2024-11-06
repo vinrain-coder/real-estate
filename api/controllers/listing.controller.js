@@ -72,6 +72,15 @@ export const getlistings = async (req, res, next) => {
       }),
     };
 
+    // Handle price filter if provided in the query
+    if (req.query.price) {
+      const price = parseFloat(req.query.price); // Convert to float (works for both integers and decimals)
+      if (isNaN(price)) {
+        return res.status(400).json({ message: 'Invalid price filter' });
+      }
+      query.price = { $lte: price }; // Apply price filter
+    }
+
     // Fetch listings based on the query, sorted by the selected field
     const listings = await Listing.find(query)
       .sort({ [sortField]: sortDirection })
@@ -89,6 +98,7 @@ export const getlistings = async (req, res, next) => {
     next(error);
   }
 };
+
 
 export const deletelisting = async (req, res, next) => {
   if (!req.user.isAdmin || req.user.id !== req.params.userId) {
