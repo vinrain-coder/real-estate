@@ -1,25 +1,25 @@
 import { Button, Select, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { AiOutlineClose } from "react-icons/ai"; // Import the remove icon
 import ListingCard from "../components/ListingCard";
 
 export default function Search() {
-  const [sidebarData, setSidebarData] = useState({
+  const defaultSidebarData = {
     searchTerm: "",
     sort: "desc",
     category: "uncategorized",
     type: "all",
     status: "all",
     estate: "all",
-  });
+  };
 
-  console.log(sidebarData);
+  const [sidebarData, setSidebarData] = useState(defaultSidebarData);
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showMore, setShowMore] = useState(false);
 
   const location = useLocation();
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,132 +30,82 @@ export default function Search() {
     const typeFromUrl = urlParams.get("type");
     const statusFromUrl = urlParams.get("status");
     const estateFromUrl = urlParams.get("estate");
-    if (
-      searchTermFromUrl ||
-      sortFromUrl ||
-      categoryFromUrl ||
-      typeFromUrl ||
-      statusFromUrl ||
-      estateFromUrl
-    ) {
-      setSidebarData({
-        ...sidebarData,
-        searchTerm: searchTermFromUrl,
-        sort: sortFromUrl,
-        category: categoryFromUrl,
-        type: typeFromUrl,
-        status: statusFromUrl,
-        estate: estateFromUrl
-      });
-    }
+    
+    setSidebarData({
+      ...sidebarData,
+      searchTerm: searchTermFromUrl || "",
+      sort: sortFromUrl || "desc",
+      category: categoryFromUrl || "uncategorized",
+      type: typeFromUrl || "all",
+      status: statusFromUrl || "all",
+      estate: estateFromUrl || "all",
+    });
 
     const fetchListings = async () => {
       setLoading(true);
       const searchQuery = urlParams.toString();
       const res = await fetch(`/api/listing/getlistings?${searchQuery}`);
-      if (!res.ok) {
-        setLoading(false);
-        return;
-      }
+      setLoading(false);
       if (res.ok) {
         const data = await res.json();
         setListings(data.listings);
-        setLoading(false);
-        if (data.listings.length === 9) {
-          setShowMore(true);
-        } else {
-          setShowMore(false);
-        }
+        setShowMore(data.listings.length === 9);
       }
     };
     fetchListings();
   }, [location.search]);
 
   const handleChange = (e) => {
-    if (e.target.id === "searchTerm") {
-      setSidebarData({ ...sidebarData, searchTerm: e.target.value });
-    }
-    if (e.target.id === "sort") {
-      const order = e.target.value || "desc";
-      setSidebarData({ ...sidebarData, sort: order });
-    }
-    if (e.target.id === "category") {
-      const category = e.target.value || "uncategorized";
-      setSidebarData({ ...sidebarData, category });
-    }
-    if (e.target.id === "type") {
-      const type = e.target.value || "all";
-      setSidebarData({ ...sidebarData, type });
-    }
-    if (e.target.id === "status") {
-      const status = e.target.value || "all";
-      setSidebarData({ ...sidebarData, status });
-    }
-    if (e.target.id === "estate") {
-      const estate = e.target.value || "all";
-      setSidebarData({ ...sidebarData, estate });
-    }
+    setSidebarData({ ...sidebarData, [e.target.id]: e.target.value });
+  };
+
+  const handleRemoveFilter = (filterKey) => {
+    setSidebarData({ ...sidebarData, [filterKey]: defaultSidebarData[filterKey] });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const urlParams = new URLSearchParams();
-  
-    // Only add parameters that are not the default values or null/empty
-    if (sidebarData.searchTerm) urlParams.set('searchTerm', sidebarData.searchTerm);
-    if (sidebarData.sort && sidebarData.sort !== 'desc') urlParams.set('sort', sidebarData.sort);
-    if (sidebarData.category && sidebarData.category !== 'uncategorized') urlParams.set('category', sidebarData.category);
-    if (sidebarData.type && sidebarData.type !== 'all') urlParams.set('type', sidebarData.type);
-    if (sidebarData.status && sidebarData.status !== 'all') urlParams.set('status', sidebarData.status);
-    if (sidebarData.estate && sidebarData.estate !== 'all') urlParams.set('estate', sidebarData.estate);
-  
-    // Construct the search query string
-    const searchQuery = urlParams.toString();
-    navigate(`/search?${searchQuery}`);
+    
+    Object.keys(sidebarData).forEach((key) => {
+      if (sidebarData[key] !== defaultSidebarData[key]) {
+        urlParams.set(key, sidebarData[key]);
+      }
+    });
+
+    navigate(`/search?${urlParams.toString()}`);
   };
-  
 
   const handleShowMore = async () => {
-    const numberOfListings = listings.length;
-    const startIndex = numberOfListings;
+    const startIndex = listings.length;
     const urlParams = new URLSearchParams();
-  
-    // Only add parameters that are not the default values or null/empty
-    if (sidebarData.searchTerm) urlParams.set('searchTerm', sidebarData.searchTerm);
-    if (sidebarData.sort && sidebarData.sort !== 'desc') urlParams.set('sort', sidebarData.sort);
-    if (sidebarData.category && sidebarData.category !== 'uncategorized') urlParams.set('category', sidebarData.category);
-    if (sidebarData.type && sidebarData.type !== 'all') urlParams.set('type', sidebarData.type);
-    if (sidebarData.status && sidebarData.status !== 'all') urlParams.set('status', sidebarData.status);
-    if (sidebarData.estate && sidebarData.estate !== 'all') urlParams.set('estate', sidebarData.estate);
-  
-    // Add start index to load more listings
-    urlParams.set('startIndex', startIndex);
-  
-    const searchQuery = urlParams.toString();
-    const res = await fetch(`/api/listing/getlistings?${searchQuery}`);
-    if (!res.ok) {
-      return;
-    }
+
+    Object.keys(sidebarData).forEach((key) => {
+      if (sidebarData[key] !== defaultSidebarData[key]) {
+        urlParams.set(key, sidebarData[key]);
+      }
+    });
+    urlParams.set("startIndex", startIndex);
+
+    const res = await fetch(`/api/listing/getlistings?${urlParams.toString()}`);
     if (res.ok) {
       const data = await res.json();
       setListings([...listings, ...data.listings]);
-      if (data.listings.length === 9) {
-        setShowMore(true);
-      } else {
-        setShowMore(false);
-      }
+      setShowMore(data.listings.length === 9);
     }
   };
-  
+
+  const handleClearFilters = () => {
+    setSidebarData(defaultSidebarData);
+    navigate("/search");
+  };
 
   return (
     <div className="flex flex-col md:flex-row">
       <div className="p-7 border-b md:border-r md:min-h-screen border-gray-500">
         <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
-          <div className="flex   items-center gap-2">
-            <label className="whitespace-nowrap font-semibold">
-              Search Term:
-            </label>
+          <div className="flex items-center gap-2">
+            <label className="whitespace-nowrap font-semibold">Search Term:</label>
             <TextInput
               placeholder="Search..."
               id="searchTerm"
@@ -163,6 +113,12 @@ export default function Search() {
               value={sidebarData.searchTerm}
               onChange={handleChange}
             />
+            {sidebarData.searchTerm && (
+              <AiOutlineClose
+                onClick={() => handleRemoveFilter("searchTerm")}
+                className="cursor-pointer text-red-500"
+              />
+            )}
           </div>
           <div className="flex items-center gap-2">
             <label className="font-semibold">Sort:</label>
@@ -170,56 +126,77 @@ export default function Search() {
               <option value="desc">Latest</option>
               <option value="asc">Oldest</option>
             </Select>
+            {sidebarData.sort !== "desc" && (
+              <AiOutlineClose
+                onClick={() => handleRemoveFilter("sort")}
+                className="cursor-pointer text-red-500"
+              />
+            )}
           </div>
           <div className="flex items-center gap-2">
             <label className="font-semibold">Category:</label>
-            <Select
-              onChange={handleChange}
-              value={sidebarData.category}
-              id="category"
-            >
+            <Select onChange={handleChange} value={sidebarData.category} id="category">
               <option value="uncategorized">Uncategorized</option>
               <option value="rental">Rental</option>
               <option value="sale">For sale</option>
             </Select>
+            {sidebarData.category !== "uncategorized" && (
+              <AiOutlineClose
+                onClick={() => handleRemoveFilter("category")}
+                className="cursor-pointer text-red-500"
+              />
+            )}
           </div>
           <div className="flex items-center gap-2">
             <label className="font-semibold">Type:</label>
             <Select onChange={handleChange} value={sidebarData.type} id="type">
               <option value="all">All</option>
-              <option value="bedsitter">Beditter</option>
+              <option value="bedsitter">Bedsitter</option>
               <option value="one-bedroom">One Bedroom</option>
               <option value="two-bedroom">Two Bedroom</option>
             </Select>
+            {sidebarData.type !== "all" && (
+              <AiOutlineClose
+                onClick={() => handleRemoveFilter("type")}
+                className="cursor-pointer text-red-500"
+              />
+            )}
           </div>
           <div className="flex items-center gap-2">
             <label className="font-semibold">Status:</label>
-            <Select
-              onChange={handleChange}
-              value={sidebarData.status}
-              id="status"
-            >
+            <Select onChange={handleChange} value={sidebarData.status} id="status">
               <option value="all">All</option>
               <option value="available">Available</option>
               <option value="rented">Rented</option>
               <option value="sold">Sold</option>
             </Select>
+            {sidebarData.status !== "all" && (
+              <AiOutlineClose
+                onClick={() => handleRemoveFilter("status")}
+                className="cursor-pointer text-red-500"
+              />
+            )}
           </div>
           <div className="flex items-center gap-2">
             <label className="font-semibold">Estate:</label>
-            <Select
-              onChange={handleChange}
-              value={sidebarData.estate}
-              id="estate"
-            >
+            <Select onChange={handleChange} value={sidebarData.estate} id="estate">
               <option value="all">All</option>
               <option value="kahawa">Kahawa</option>
-              <option value="kasarani">kasarani</option>
+              <option value="kasarani">Kasarani</option>
               <option value="umoja">Umoja</option>
             </Select>
+            {sidebarData.estate !== "all" && (
+              <AiOutlineClose
+                onClick={() => handleRemoveFilter("estate")}
+                className="cursor-pointer text-red-500"
+              />
+            )}
           </div>
           <Button type="submit" outline className="bg-orange-500 font-bold">
             Apply Filters
+          </Button>
+          <Button onClick={handleClearFilters} color="red" className="mt-2">
+            Clear Filters
           </Button>
         </form>
       </div>
