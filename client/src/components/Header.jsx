@@ -63,41 +63,35 @@ export default function Header() {
       </Link>
 
       {/* Large screen search */}
-      <form onSubmit={handleSubmit} className="hidden md:flex">
-        <TextInput
-          type="text"
-          placeholder="Search..."
-          rightIcon={AiOutlineSearch}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </form>
-
-      {/* Small screen search button */}
-      <Button
-        className="w-12 h-10 hidden"
-        color="gray"
-        pill
-        onClick={toggleSearchInput}
-      >
-        <AiOutlineSearch />
-      </Button>
-
-      {/* Small screen search input */}
-      {showSearchInput && (
-        <form
-          onSubmit={handleSubmit}
-          className="hidden w-full justify-center mt-2"
-        >
+      <form onSubmit={handleSubmit} className="hidden sm:flex">
+        <div className="relative flex items-center justify-end">
           <TextInput
             type="text"
             placeholder="Search..."
-            rightIcon={AiOutlineSearch}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-        </form>
-      )}
+          <button type="submit" className="absolute right-4">
+            <AiOutlineSearch className="text-lg" />
+          </button>
+        </div>
+      </form>
+
+      {/* Small screen search */}
+      <form onSubmit={handleSubmit} className="sm:hidden flex">
+        <div className="relative flex items-center justify-end">
+          <Button
+            className="w-10 h-10 rounded-full"
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <button type="submit" className="absolute right-3 dark:text-gray-700">
+            <AiOutlineSearch className="text-lg" />
+          </button>
+        </div>
+      </form>
 
       <div className="flex gap-2 md:order-2">
         {/* Dark/Light mode toggle */}
@@ -126,9 +120,22 @@ export default function Header() {
                 {currentUser.email}
               </span>
             </Dropdown.Header>
-            <Link to={"/dashboard?tab=profile"}>
+            {/* Conditionally show dashboard and add listing options if user is an admin */}
+            {currentUser.isAdmin && (
+              <>
+                <Link to="/dashboard">
+                  <Dropdown.Item>Dashboard</Dropdown.Item>
+                </Link>
+                <Link to="/create-listing">
+                  <Dropdown.Item>Add Listing</Dropdown.Item>
+                </Link>
+              </>
+            )}
+
+            <Link to="/dashboard?tab=profile">
               <Dropdown.Item>Profile</Dropdown.Item>
             </Link>
+
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleLogout}>Log out</Dropdown.Item>
           </Dropdown>

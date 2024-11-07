@@ -91,11 +91,13 @@ export default function CreateListing() {
             onChange={(e) =>
               setFormData({ ...formData, title: e.target.value })
             }
+            className="w-full"
           />
           <Select
             onChange={(e) =>
               setFormData({ ...formData, category: e.target.value })
             }
+            className="w-full"
           >
             <option value="category">Select a category</option>
             <option value="rental">Rentals</option>
@@ -103,20 +105,83 @@ export default function CreateListing() {
           </Select>
           <Select
             onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+            className="w-full"
           >
             <option value="type">Type</option>
             <option value="bedsitter">Bedsitter</option>
             <option value="one-bedroom">One Bedroom</option>
+            <option value="two-bedroom">Two Bedroom</option>
           </Select>
         </div>
+        <div className="flex flex-col gap-4 sm:flex-row justify-between">
+          <Select
+            onChange={(e) =>
+              setFormData({ ...formData, country: e.target.value })
+            }
+            className="w-full"
+          >
+            <option value="country">Select a country</option>
+            <option value="kenya">Kenya</option>
+          </Select>
+          <Select
+            onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+            className="w-full"
+          >
+            <option value="city">Select a city</option>
+            <option value="Nairobi">Nairobi</option>
+            <option value="mombasa">Mombasa</option>
+            <option value="kisumu">Kisumu</option>
+            <option value="nakuru">Nakuru</option>
+            <option value="eldoret">Eldoret</option>
+          </Select>
+          <Select
+            onChange={(e) =>
+              setFormData({ ...formData, estate: e.target.value })
+            }
+            className="w-full"
+          >
+            <option value="estate">Estate</option>
+            <option value="kahawa">Kahawa</option>
+            <option value="kasarani">Kasarani</option>
+            <option value="umoja">Umoja</option>
+          </Select>
+        </div>
+        <div className="flex flex-col gap-4 sm:flex-row justify-between">
+          <Select
+            onChange={(e) =>
+              setFormData({ ...formData, status: e.target.value })
+            }
+            className="w-full"
+          >
+            <option value="status">Status</option>
+            <option value="available">Available</option>
+            <option value="rented">Rented</option>
+            <option value="sold">Sold</option>
+          </Select>
+          <TextInput
+            type="number"
+            placeholder="Price"
+            required
+            onChange={(e) =>
+              setFormData({ ...formData, price: e.target.value })
+            }
+            className="w-full"
+          />
+        </div>
         {/* Image Upload Section */}
-        <div className="flex items-center border-4 border-teal-500 border-dotted p-3">
-          <FileInput onChange={(e) => setFile(e.target.files[0])} />
-          <Button onClick={handleUploadImage} disabled={imageUploadProgress}>
+        <div className="flex items-center justify-between border-4 border-orange-400 border-dotted p-3">
+          <FileInput onChange={(e) => setFile(e.target.files[0])} required/>
+          <Button
+            onClick={handleUploadImage}
+            disabled={imageUploadProgress}
+            outline
+            className="bg-orange-500"
+          >
             {imageUploadProgress ? (
               <CircularProgressbar
                 value={imageUploadProgress}
                 text={`${imageUploadProgress}%`}
+                className="h-12 w-12"
               />
             ) : (
               "Upload image"
@@ -128,10 +193,17 @@ export default function CreateListing() {
           <img src={formData.image} alt="Preview" className="w-24 h-24" />
         )}
         <ReactQuill
+          required
           onChange={(value) => setFormData({ ...formData, description: value })}
+          className="h-48 mb-12"
         />
         {/* Submit Button */}
-        <Button type="submit" disabled={loading}>
+        <Button
+          type="submit"
+          disabled={loading}
+          outline
+          className="bg-orange-500"
+        >
           {loading ? "Publishing..." : "Publish"}
         </Button>
         {publishError && <Alert color="failure">{publishError}</Alert>}

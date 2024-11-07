@@ -10,6 +10,7 @@ export default function Search() {
     category: "uncategorized",
     type: "all",
     status: "all",
+    estate: "all",
   });
 
   console.log(sidebarData);
@@ -28,12 +29,14 @@ export default function Search() {
     const categoryFromUrl = urlParams.get("category");
     const typeFromUrl = urlParams.get("type");
     const statusFromUrl = urlParams.get("status");
+    const estateFromUrl = urlParams.get("estate");
     if (
       searchTermFromUrl ||
       sortFromUrl ||
       categoryFromUrl ||
       typeFromUrl ||
-      statusFromUrl
+      statusFromUrl ||
+      estateFromUrl
     ) {
       setSidebarData({
         ...sidebarData,
@@ -42,6 +45,7 @@ export default function Search() {
         category: categoryFromUrl,
         type: typeFromUrl,
         status: statusFromUrl,
+        estate: estateFromUrl
       });
     }
 
@@ -87,6 +91,10 @@ export default function Search() {
       const status = e.target.value || "all";
       setSidebarData({ ...sidebarData, status });
     }
+    if (e.target.id === "estate") {
+      const estate = e.target.value || "all";
+      setSidebarData({ ...sidebarData, estate });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -99,6 +107,7 @@ export default function Search() {
     if (sidebarData.category && sidebarData.category !== 'uncategorized') urlParams.set('category', sidebarData.category);
     if (sidebarData.type && sidebarData.type !== 'all') urlParams.set('type', sidebarData.type);
     if (sidebarData.status && sidebarData.status !== 'all') urlParams.set('status', sidebarData.status);
+    if (sidebarData.estate && sidebarData.estate !== 'all') urlParams.set('estate', sidebarData.estate);
   
     // Construct the search query string
     const searchQuery = urlParams.toString();
@@ -117,6 +126,7 @@ export default function Search() {
     if (sidebarData.category && sidebarData.category !== 'uncategorized') urlParams.set('category', sidebarData.category);
     if (sidebarData.type && sidebarData.type !== 'all') urlParams.set('type', sidebarData.type);
     if (sidebarData.status && sidebarData.status !== 'all') urlParams.set('status', sidebarData.status);
+    if (sidebarData.estate && sidebarData.estate !== 'all') urlParams.set('estate', sidebarData.estate);
   
     // Add start index to load more listings
     urlParams.set('startIndex', startIndex);
@@ -193,6 +203,19 @@ export default function Search() {
               <option value="available">Available</option>
               <option value="rented">Rented</option>
               <option value="sold">Sold</option>
+            </Select>
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="font-semibold">Estate:</label>
+            <Select
+              onChange={handleChange}
+              value={sidebarData.estate}
+              id="estate"
+            >
+              <option value="all">All</option>
+              <option value="kahawa">Kahawa</option>
+              <option value="kasarani">kasarani</option>
+              <option value="umoja">Umoja</option>
             </Select>
           </div>
           <Button type="submit" outline className="bg-orange-500 font-bold">

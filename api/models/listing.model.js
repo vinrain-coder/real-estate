@@ -26,6 +26,7 @@ const listingSchema = new mongoose.Schema(
     },
     estate: {
       type: String,
+      default: "all",
       required: true,
     },
     image: {

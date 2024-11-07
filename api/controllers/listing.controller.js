@@ -64,6 +64,7 @@ export const getlistings = async (req, res, next) => {
       ...(req.query.listingId && { _id: req.query.listingId }),
       ...(req.query.type && { type: req.query.type }),
       ...(req.query.status && { status: req.query.status }),
+      ...(req.query.estate && { estate: req.query.estate }),
       ...(req.query.searchTerm && {
         $or: [
           { title: { $regex: req.query.searchTerm, $options: "i" } },

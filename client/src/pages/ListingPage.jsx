@@ -1,7 +1,6 @@
 import { Spinner, Button } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import CallToAction from "../components/CallToAction";
 import CommentSection from "../components/CommentSection";
 import ListingCard from "../components/ListingCard";
 import { AiOutlineArrowRight } from "react-icons/ai";
@@ -81,9 +80,10 @@ export default function ListingPage() {
           className="self-center mt-5"
         >
           <Button color="gray" pill size="lg">
-          {listing &&
-            listing.category &&
-            listing.category.charAt(0).toUpperCase() + listing.category.slice(1)}
+            {listing &&
+              listing.category &&
+              listing.category.charAt(0).toUpperCase() +
+                listing.category.slice(1)}
           </Button>
         </Link>
       )}
@@ -127,7 +127,9 @@ export default function ListingPage() {
           </h1>
         </div>
         <div className="flex flex-row gap-1 items-center justify-center">
-          <h1 className=" flex flex-row text-orange-500 font-bold text-lg">Price: Kshs.</h1>
+          <h1 className=" flex flex-row text-orange-500 font-bold text-lg">
+            Price: Kshs.
+          </h1>
           <h1 className="font-bold text-orange-500 text-lg">
             {listing && listing.price && listing.price.toLocaleString()}
           </h1>
@@ -139,9 +141,7 @@ export default function ListingPage() {
           dangerouslySetInnerHTML={{ __html: listing.description }}
         ></div>
       )}
-      <div className="max-w-4xl mx-auto w-full">
-        <CallToAction />
-      </div>
+      <div className="max-w-4xl mx-auto w-full"></div>
       {listing && <CommentSection listingId={listing._id} />}
       <div className="flex flex-col justify-center items-center mb-5">
         <h1 className="text-xl mt-5">Recent articles</h1>
