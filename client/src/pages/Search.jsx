@@ -195,7 +195,7 @@ export default function Search() {
               <option value="sold">Sold</option>
             </Select>
           </div>
-          <Button type="submit" outline gradientDuoTone="purpleToPink">
+          <Button type="submit" outline className="bg-orange-500 font-bold">
             Apply Filters
           </Button>
         </form>
@@ -217,7 +217,7 @@ export default function Search() {
           {showMore && (
             <button
               onClick={handleShowMore}
-              className="text-teal-500 text-lg hover:underline p-7 w-full"
+              className="text-orange-500 text-lg hover:underline p-7 w-full"
             >
               Show More
             </button>

@@ -13,7 +13,9 @@ export default function DashListings() {
   useEffect(() => {
     const fetchListings = async () => {
       try {
-        const res = await fetch(`/api/listing/getlistings?userId=${currentUser._id}`);
+        const res = await fetch(
+          `/api/listing/getlistings?userId=${currentUser._id}`
+        );
         const data = await res.json();
         if (res.ok) {
           setUserListings(data.listings);
@@ -80,6 +82,8 @@ export default function DashListings() {
               <Table.HeadCell>Listing image</Table.HeadCell>
               <Table.HeadCell>Listing title</Table.HeadCell>
               <Table.HeadCell>Category</Table.HeadCell>
+              <Table.HeadCell>Type</Table.HeadCell>
+              <Table.HeadCell>Price</Table.HeadCell>
               <Table.HeadCell>Delete</Table.HeadCell>
               <Table.HeadCell>
                 <span>Edit</span>
@@ -105,10 +109,27 @@ export default function DashListings() {
                       className="font-medium text-gray-900 dark:text-white"
                       to={`/listing/${listing.slug}`}
                     >
-                      {listing.title}
+                      {listing &&
+                        listing.title &&
+                        listing.title.charAt(0).toUpperCase() +
+                          listing.title.slice(1)}
                     </Link>
                   </Table.Cell>
-                  <Table.Cell>{listing.category}</Table.Cell>
+                  <Table.Cell>
+                    {listing &&
+                      listing.category &&
+                      listing.category.charAt(0).toUpperCase() +
+                        listing.category.slice(1)}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {listing &&
+                      listing.type &&
+                      listing.type.charAt(0).toUpperCase() +
+                        listing.type.slice(1)}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {listing && listing.price && listing.price.toLocaleString()}
+                  </Table.Cell>
                   <Table.Cell>
                     <span
                       onClick={() => {

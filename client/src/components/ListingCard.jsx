@@ -11,11 +11,11 @@ export default function ListingCard({ listing }) {
         />
       </Link>
       <div className="p-3 flex flex-col gap-2">
-          <p className="text-lg font-semibold font-lora line-clamp-1">
-            {listing &&
-              listing.title &&
-              listing.title.charAt(0).toUpperCase() + listing.title.slice(1)}
-          </p>
+        <p className="text-lg font-semibold font-lora line-clamp-1">
+          {listing &&
+            listing.title &&
+            listing.title.charAt(0).toUpperCase() + listing.title.slice(1)}
+        </p>
         <div className="flex justify-between mt-2">
           <h1 className="font-semibold">
             {listing &&
@@ -32,14 +32,14 @@ export default function ListingCard({ listing }) {
           </div>
         </div>
         <span className="italic text-md mt-2 animate-pulse">
-            {listing &&
-              listing.category &&
-              listing.category.charAt(0).toUpperCase() +
-                listing.category.slice(1)}
-          </span>
+          {listing &&
+            listing.category &&
+            listing.category.charAt(0).toUpperCase() +
+              listing.category.slice(1)}
+        </span>
         <Link
           to={`/listing/${listing.slug}`}
-          className="z-10 group-hover:bottom-0 absolute bottom-[-200px] left-0 right-0 border border-teal-500 text-teal-500 hover:bg-teal-500 hover:text-white transition-all duration-300 text-center py-2 rounded-md !rounded-tl-none m-2"
+          className="z-10 group-hover:bottom-0 absolute bottom-[-200px] left-0 right-0 border border-orange-300 text-orange-300 hover:bg-orange-300 hover:text-white transition-all duration-300 text-center py-2 rounded-md !rounded-tl-none m-2"
         >
           View listing
         </Link>

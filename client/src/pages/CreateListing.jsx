@@ -37,7 +37,8 @@ export default function CreateListing() {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setImageUploadProgress(progress.toFixed(0));
       },
       (error) => {
@@ -77,7 +78,9 @@ export default function CreateListing() {
 
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen">
-      <h1 className="text-center text-3xl my-7 font-semibold">Create a listing</h1>
+      <h1 className="text-center text-3xl my-7 font-semibold">
+        Create a listing
+      </h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         {/* Form Fields */}
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
@@ -85,14 +88,22 @@ export default function CreateListing() {
             type="text"
             placeholder="Title"
             required
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
           />
-          <Select onChange={(e) => setFormData({ ...formData, category: e.target.value })}>
+          <Select
+            onChange={(e) =>
+              setFormData({ ...formData, category: e.target.value })
+            }
+          >
             <option value="category">Select a category</option>
             <option value="rental">Rentals</option>
             <option value="for-sale">For sale</option>
           </Select>
-          <Select onChange={(e) => setFormData({ ...formData, type: e.target.value })}>
+          <Select
+            onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+          >
             <option value="type">Type</option>
             <option value="bedsitter">Bedsitter</option>
             <option value="one-bedroom">One Bedroom</option>
@@ -103,15 +114,22 @@ export default function CreateListing() {
           <FileInput onChange={(e) => setFile(e.target.files[0])} />
           <Button onClick={handleUploadImage} disabled={imageUploadProgress}>
             {imageUploadProgress ? (
-              <CircularProgressbar value={imageUploadProgress} text={`${imageUploadProgress}%`} />
+              <CircularProgressbar
+                value={imageUploadProgress}
+                text={`${imageUploadProgress}%`}
+              />
             ) : (
               "Upload image"
             )}
           </Button>
         </div>
         {imageUploadError && <Alert color="failure">{imageUploadError}</Alert>}
-        {formData.image && <img src={formData.image} alt="Preview" className="w-24 h-24" />}
-        <ReactQuill onChange={(value) => setFormData({ ...formData, description: value })} />
+        {formData.image && (
+          <img src={formData.image} alt="Preview" className="w-24 h-24" />
+        )}
+        <ReactQuill
+          onChange={(value) => setFormData({ ...formData, description: value })}
+        />
         {/* Submit Button */}
         <Button type="submit" disabled={loading}>
           {loading ? "Publishing..." : "Publish"}
