@@ -28,7 +28,7 @@ const Contact = () => {
                     Call
                   </span>
                   <span className="text-gray-500 dark:text-gray-400">
-                    021 123 145 14
+                    1234567890
                   </span>
                 </div>
               </div>
@@ -49,7 +49,7 @@ const Contact = () => {
                     Chat
                   </span>
                   <span className="text-gray-500 dark:text-gray-400">
-                    021 123 145 14
+                    1234567890
                   </span>
                 </div>
               </div>
@@ -70,7 +70,7 @@ const Contact = () => {
                     Video Call
                   </span>
                   <span className="text-gray-500 dark:text-gray-400">
-                    021 123 145 14
+                    1234567890
                   </span>
                 </div>
               </div>
@@ -91,7 +91,7 @@ const Contact = () => {
                     Message
                   </span>
                   <span className="text-gray-500 dark:text-gray-400">
-                    021 123 145 14
+                    1234567890
                   </span>
                 </div>
               </div>

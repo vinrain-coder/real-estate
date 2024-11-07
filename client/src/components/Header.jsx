@@ -141,7 +141,7 @@ export default function Header() {
           </Dropdown>
         ) : (
           <Link to="/sign-in">
-            <Button gradientDuoTone="purpleToBlue" outline>
+            <Button outline className="bg-orange-500">
               Sign In
             </Button>
           </Link>
@@ -152,13 +152,13 @@ export default function Header() {
 
       <Navbar.Collapse>
         <Navbar.Link as="div">
-          <Link to="/">Home</Link>
+          <Link to="#get-started">Get started</Link>
         </Navbar.Link>
         <Navbar.Link as="div">
-          <Link to="/about">About</Link>
+          <Link to="#value">Our value</Link>
         </Navbar.Link>
         <Navbar.Link as="div">
-          <Link to="/project">Projects</Link>
+          <Link to="#contact-us">Contact us</Link>
         </Navbar.Link>
       </Navbar.Collapse>
     </Navbar>

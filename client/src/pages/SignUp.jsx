@@ -32,7 +32,7 @@ export default function SignUp() {
       if (res.ok) {
         navigate("/sign-in");
       } else {
-        setErrorMessage(data.message || 'Sign-up failed');
+        setErrorMessage(data.message || "Sign-up failed");
       }
     } catch (error) {
       setErrorMessage("An error occurred. Please try again.");
@@ -45,14 +45,14 @@ export default function SignUp() {
     <div className="min-h-screen mt-20 px-4">
       <div className="flex flex-col sm:flex-row md:items-center p-3 max-w-3xl mx-auto gap-5">
         <div className="flex-1">
-          <Link to="/" className="text-4xl font-bold dark:text-white">
-            <span className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white">
-              Vinrain's
-            </span>
-            Blog
+          <Link
+            to="/"
+            className="self-center whitespace-nowrap text-md text-2xl md:text-4xl font-bold text-orange-500"
+          >
+            FindHouse
           </Link>
           <p className="text-sm mt-5">
-            This is my blog. Create an account to join us!
+            Welcome to FindHouse. Create an account to join us!
           </p>
         </div>
         <div className="flex-1">
@@ -85,7 +85,8 @@ export default function SignUp() {
               />
             </div>
             <Button
-              gradientDuoTone="purpleToPink"
+              outline
+              className="bg-orange-500"
               type="submit"
               disabled={loading}
             >
