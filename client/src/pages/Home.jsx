@@ -22,11 +22,11 @@ export default function Home() {
   return (
     <div>
       <Hero />
-      <Companies />
+      {/* <Companies /> */}
       <Value />
       <Contact />
       <GetStarted />
-      <div className="max-w-6xl mx-auto p-3 flex flex-col gap-8 py-7">
+      <div className="max-w-6xl mx-auto p-3 flex flex-col gap-8 py-7 items-center">
         {listings && listings.length > 0 && (
           <div className="flex flex-col gap-6">
             <h2 className="text-2xl font-semibold text-center">

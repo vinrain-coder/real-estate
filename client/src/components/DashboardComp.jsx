@@ -128,7 +128,7 @@ export default function DashboardComp() {
         <div className="flex flex-col w-full md:w-80 shadow-md p-2 rounded-md dark:bg-gray-800">
           <div className="flex justify-between p-3 text-sm font-semibold">
             <h1 className="text-center p-2">Recent users</h1>
-            <Button outline gradientDuoTone="purpleToPink">
+            <Button outline className="bg-orange-500">
               <Link to={"/dashboard?tab=users"}>See all</Link>
             </Button>
           </div>
@@ -136,6 +136,7 @@ export default function DashboardComp() {
             <Table.Head>
               <Table.HeadCell>User image</Table.HeadCell>
               <Table.HeadCell>Username</Table.HeadCell>
+              <Table.HeadCell>Email</Table.HeadCell>
             </Table.Head>
             {users &&
               users.map((user) => (
@@ -149,6 +150,7 @@ export default function DashboardComp() {
                       />
                     </Table.Cell>
                     <Table.Cell>{user.username}</Table.Cell>
+                    <Table.Cell>{user.email}</Table.Cell>
                   </Table.Row>
                 </Table.Body>
               ))}
@@ -158,7 +160,7 @@ export default function DashboardComp() {
         <div className="flex flex-col w-full md:w-80 shadow-md p-2 rounded-md dark:bg-gray-800">
           <div className="flex justify-between p-3 text-sm font-semibold">
             <h1 className="text-center p-2">Recent comments</h1>
-            <Button outline gradientDuoTone="purpleToPink">
+            <Button outline className="bg-orange-500">
               <Link to={"/dashboard?tab=comments"}>See all</Link>
             </Button>
           </div>
@@ -184,7 +186,7 @@ export default function DashboardComp() {
         <div className="flex flex-col w-full md:w-80 shadow-md p-2 rounded-md dark:bg-gray-800">
           <div className="flex justify-between p-3 text-sm font-semibold">
             <h1 className="text-center p-2">Recent listings</h1>
-            <Button outline gradientDuoTone="purpleToPink">
+            <Button outline className="bg-orange-500">
               <Link to={"/dashboard?tab=listings"}>See all</Link>
             </Button>
           </div>

@@ -3,6 +3,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Enable smooth scrolling with Tailwind CSS */
+html {
+  @apply scroll-smooth;
+}
+
+
 body {
   height: 100vh;
 }
@@ -46,4 +52,14 @@ body {
 }
 .dark .post-listing{
   color: #9CA3AF;
+}
+
+.orange-gradient {
+  background: #f97316; /* Solid orange fallback */
+  background: linear-gradient(-90deg, #f97316 0%, rgba(249, 115, 22, 0) 100%);
+  background: -webkit-linear-gradient(
+    -90deg,
+    #f97316 0%,
+    rgba(249, 115, 22, 0) 100%
+  );
 }

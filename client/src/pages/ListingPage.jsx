@@ -1,9 +1,10 @@
-import { Spinner, Button } from "flowbite-react";
+import { Spinner, Button, Label } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import CommentSection from "../components/CommentSection";
 import ListingCard from "../components/ListingCard";
 import { AiOutlineArrowRight } from "react-icons/ai";
+import { BsArrowDown } from "react-icons/bs";
 
 export default function ListingPage() {
   const { listingSlug } = useParams();
@@ -95,7 +96,7 @@ export default function ListingPage() {
         />
       )}
 
-      <div className="flex flex-row gap-4 items-center justify-center m-10">
+      <div className="flex flex-row gap-4 items-center justify-center mt-6">
         <h1 className="font-bold text-xl">Location:</h1>
         <h1 className="font-semibold">
           {listing &&
@@ -117,9 +118,10 @@ export default function ListingPage() {
             listing.estate.charAt(0).toUpperCase() + listing.estate.slice(1)}
         </h1>
       </div>
+      <hr className="my-4 w-72 self-center" />
       <div className="flex flex-row gap-12 items-center justify-center">
-        <div className=" flex flex-row gap-2">
-          <h1 className="font-semibold">Status:</h1>
+        <div className=" flex flex-row items-center justify-center gap-2">
+          <Label className="font-semibold text-lg">Status:</Label>
           <h1 className="font-semibold">
             {listing &&
               listing.status &&
@@ -127,29 +129,38 @@ export default function ListingPage() {
           </h1>
         </div>
         <div className="flex flex-row gap-1 items-center justify-center">
-          <h1 className=" flex flex-row text-orange-500 font-bold text-lg">
+          <Label className=" flex flex-row text-orange-500 font-bold text-lg">
             Price: Kshs.
-          </h1>
+          </Label>
           <h1 className="font-bold text-orange-500 text-lg">
             {listing && listing.price && listing.price.toLocaleString()}
           </h1>
         </div>
       </div>
-      {listing && (
-        <div
-          className="p-3 m-10 max-w-2xl mx-auto w-full listing-content"
-          dangerouslySetInnerHTML={{ __html: listing.description }}
-        ></div>
-      )}
+      <hr className="my-4 w-72 self-center" />
+      <div className="flex flex-col items-center mt-8">
+        <Label className="flex font-bold text-lg text-orange-400 gap-2 items-center justify-center font-lora underline">
+          Description
+          <BsArrowDown/>
+        </Label>
+        {listing && (
+          <div
+            className="p-3 max-w-2xl mx-auto w-full listing-content"
+            dangerouslySetInnerHTML={{ __html: listing.description }}
+          ></div>
+        )}
+      </div>
       <div className="max-w-4xl mx-auto w-full"></div>
       {listing && <CommentSection listingId={listing._id} />}
       <div className="flex flex-col justify-center items-center mb-5">
-        <h1 className="text-xl mt-5">Recent articles</h1>
+        <h1 className="text-xl mt-5">Recent listings</h1>
         <div className="flex gap-5 flex-wrap justify-center">
           {recentListings &&
-            recentListings.map((recentListing) => (
-              <ListingCard key={recentListing._id} listing={recentListing} />
-            ))}
+            recentListings
+              .slice(0, 3)
+              .map((recentListing) => (
+                <ListingCard key={recentListing._id} listing={recentListing} />
+              ))}
         </div>
       </div>
     </main>

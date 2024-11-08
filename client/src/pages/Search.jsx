@@ -30,7 +30,7 @@ export default function Search() {
     const typeFromUrl = urlParams.get("type");
     const statusFromUrl = urlParams.get("status");
     const estateFromUrl = urlParams.get("estate");
-    
+
     setSidebarData({
       ...sidebarData,
       searchTerm: searchTermFromUrl || "",
@@ -60,13 +60,16 @@ export default function Search() {
   };
 
   const handleRemoveFilter = (filterKey) => {
-    setSidebarData({ ...sidebarData, [filterKey]: defaultSidebarData[filterKey] });
+    setSidebarData({
+      ...sidebarData,
+      [filterKey]: defaultSidebarData[filterKey],
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const urlParams = new URLSearchParams();
-    
+
     Object.keys(sidebarData).forEach((key) => {
       if (sidebarData[key] !== defaultSidebarData[key]) {
         urlParams.set(key, sidebarData[key]);
@@ -105,7 +108,9 @@ export default function Search() {
       <div className="p-7 border-b md:border-r md:min-h-screen border-gray-500">
         <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
           <div className="flex items-center gap-2">
-            <label className="whitespace-nowrap font-semibold">Search Term:</label>
+            <label className="whitespace-nowrap font-semibold">
+              Search Term:
+            </label>
             <TextInput
               placeholder="Search..."
               id="searchTerm"
@@ -135,7 +140,11 @@ export default function Search() {
           </div>
           <div className="flex items-center gap-2">
             <label className="font-semibold">Category:</label>
-            <Select onChange={handleChange} value={sidebarData.category} id="category">
+            <Select
+              onChange={handleChange}
+              value={sidebarData.category}
+              id="category"
+            >
               <option value="uncategorized">Uncategorized</option>
               <option value="rental">Rental</option>
               <option value="sale">For sale</option>
@@ -164,7 +173,11 @@ export default function Search() {
           </div>
           <div className="flex items-center gap-2">
             <label className="font-semibold">Status:</label>
-            <Select onChange={handleChange} value={sidebarData.status} id="status">
+            <Select
+              onChange={handleChange}
+              value={sidebarData.status}
+              id="status"
+            >
               <option value="all">All</option>
               <option value="available">Available</option>
               <option value="rented">Rented</option>
@@ -179,7 +192,11 @@ export default function Search() {
           </div>
           <div className="flex items-center gap-2">
             <label className="font-semibold">Estate:</label>
-            <Select onChange={handleChange} value={sidebarData.estate} id="estate">
+            <Select
+              onChange={handleChange}
+              value={sidebarData.estate}
+              id="estate"
+            >
               <option value="all">All</option>
               <option value="kahawa">Kahawa</option>
               <option value="kasarani">Kasarani</option>
@@ -209,11 +226,18 @@ export default function Search() {
             <p className="text-xl text-gray-500">No listings found.</p>
           )}
           {loading && <p className="text-xl text-gray-500">Loading...</p>}
-          {!loading &&
-            listings &&
-            listings.map((listing) => (
-              <ListingCard key={listing._id} listing={listing} />
-            ))}
+          {!loading && listings && (
+            <div className="flex flex-wrap gap-2 justify-center">
+              {listings.map((listing) => (
+                <ListingCard
+                  key={listing._id}
+                  listing={listing}
+                  className="w-full sm:w-[48%] lg:w-[23%] xl:w-[18%]"
+                />
+              ))}
+            </div>
+          )}
+
           {showMore && (
             <button
               onClick={handleShowMore}
