@@ -135,7 +135,6 @@ export const updatelisting = async (req, res, next) => {
           estate: req.body.estate,
           status: req.body.status,
           price: req.body.price,
-          area: req.body.area,
           type: req.body.type,
         },
       },
